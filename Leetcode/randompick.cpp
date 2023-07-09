@@ -1,36 +1,21 @@
-class MinStack {
+class Solution {
 public:
-    stack<pair<int,int> > st;
-    
-    void push(int val) {
-        if(st.empty()){
-            st.push({val,val});
-        }
-        else{
-            st.push({val,min(st.top().second,val)});
+    map<int,vector<int> > mp;
+    Solution(vector<int>& nums) {
+        for(int i = 0; i < nums.size() ; i++){
+            mp[nums[i]].push_back(i);
         }
     }
     
-    void pop() {
-
-        st.pop();
-
-    }
-    
-    int top() {
-        return st.top().first;
-    }
-    
-    int getMin() {
-        return st.top().second;
+    int pick(int target) {
+        int sz = mp[target].size();
+        int random = rand() % sz;
+        return mp[target][random];
     }
 };
 
 /**
- * Your MinStack object will be instantiated and called as such:
- * MinStack* obj = new MinStack();
- * obj->push(val);
- * obj->pop();
- * int param_3 = obj->top();
- * int param_4 = obj->getMin();
+ * Your Solution object will be instantiated and called as such:
+ * Solution* obj = new Solution(nums);
+ * int param_1 = obj->pick(target);
  */
