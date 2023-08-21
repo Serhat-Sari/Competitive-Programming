@@ -1,36 +1,33 @@
 class Solution {
 public:
-    int longestConsecutive(vector<int>& nums) {
-        if(nums.size() == 0)
-            return 0;
-        else if(nums.size() == 1)
-            return 1;
-        else{
-        set<int> st;
-        for(int i = 0;i<nums.size();i++){
-            st.insert(nums[i]);
-        }
-        int curr_consec = 1;
-        int max_consec = 1;
-        set<int>::iterator it1 = st.begin();
-        set<int>::iterator it2 = it1;
-        it2++;
 
-        while(it2 != st.end()){
+    void dfs(int row, int col, vector<vector<char > > &grid){
+        if( row  < 0 || row >= grid.size() || col < 0 || col >= grid[0].size())
+            return;
+        if(grid[row][col] == '0' || grid[row][col] == '2')
+            return;
+        grid[row][col] = '2';
+        dfs(row,col+1,grid);
+        dfs(row,col-1,grid);
+        dfs(row+1,col,grid);
+        dfs(row-1,col,grid);
+    
+    }
 
-            if(*it2 == (*it1) + 1){
-                curr_consec++;
-                max_consec = max(curr_consec,max_consec);}
-            
-            else if(*it2 != (*it1) +1 ){
-                curr_consec = 1;
+    int numIslands(vector<vector<char>>& grid) {
+
+        int ans = 0;
+
+
+        for(int i = 0;i<grid.size();i++){
+            for(int j = 0; j < grid[0].size() ; j++){
+
+                if(grid[i][j] == '1'){
+                    dfs(i,j,grid);
+                    ans++;
+                }
             }
-
-            it1++;
-            it2++;
-
         }
-        return max_consec;
-        }
+        return ans;
     }
 };
