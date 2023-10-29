@@ -18,36 +18,32 @@ void combine(int u, int v) {
     sz[u] += sz[v];
 }
 
-struct edge {
-
-    int u,v,w;
-    bool operator<(edge const& other){
-        return w < other.w;
-    }
-};
-
 int main(){
 
     int n;
     cin >> n;
-    vector<edge> edges(n+1);
+    vector<pair<int,pair<int,int> > >  adj(n+1);
     for(int i = 1; i<n+1;i++){
         int u,v,w;
         cin >> u >> v >> w;
-        edges[i].u = u, edges[i].v = v, edges[i].w = w;
+        adj.push_back({w,{u,v}});
     }
-    vector<edge> results;
+    vector<pair<int,pair<int,int> > > results;
     int cost = 0;
     for(int i = 1; i<n+1;i++){
         par[i] = i; sz[i] = 1;
     }
-    sort(edges.begin(),edges.end());
+    sort(adj.begin(),adj.end());
 
-    for(edge e: edges){
-        if(find(e.u) != find(e.v)){
-            cost += e.w;
-            results.push_back(e);
-            combine(e.u,e.v);
+    for(auto it : adj){
+        int wt = it.first;
+        int u = it.second.first;
+        int v = it.second.second;
+
+        if(find(u) != find(v)){
+            cost += wt;
+            combine(u,v);
+            results.push_back({wt,{u,v}});
         }
     }
     
